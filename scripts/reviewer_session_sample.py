@@ -67,12 +67,14 @@ async def _list_inventory() -> None:
         )
         if shaped:
             session_shaped += 1
-        marker = "session" if shaped else "pr"
+        marker = "SESSION-SHAPED" if shaped else "pr"
         print(
             f"WF-{total}: [{wf_type}] {wf_id} status={status} "
             f"start={start_time} class={marker}"
         )
-    print(f"SUMMARY: {total} workflows listed, {session_shaped} session-shaped")
+    print(
+        f"SUMMARY: {total} workflows listed, {session_shaped} session-shaped"
+    )
 
 
 def main() -> None:
@@ -82,10 +84,12 @@ def main() -> None:
         return
     print(
         f"SESSION-DIAG: chosen={interpreter} current={sys.executable} "
-        f"host={os.environ.get(chr(84)+chr(69)+chr(77)+chr(80)+chr(79)+chr(82)+chr(65)+chr(76)+chr(95)+chr(72)+chr(79)+chr(83)+chr(84)) or chr(100)+chr(101)+chr(102)+chr(97)+chr(117)+chr(108)+chr(116)} "
-        f"ns={os.environ.get(chr(84)+chr(69)+chr(77)+chr(80)+chr(79)+chr(82)+chr(65)+chr(76)+chr(95)+chr(78)+chr(65)+chr(77)+chr(69)+chr(83)+chr(80)+chr(65)+chr(67)+chr(69)) or chr(100)+chr(101)+chr(102)+chr(97)+chr(117)+chr(108)+chr(116)}"
+        f"host={os.environ.get('TEMPORAL_HOST') or 'default'} "
+        f"ns={os.environ.get('TEMPORAL_NAMESPACE') or 'default'}"
     )
     if sys.executable != interpreter:
+        # String comparison on purpose: the venv python is a symlink, so a
+        # realpath comparison silently fails to match.
         os.execv(interpreter, [interpreter, os.path.abspath(__file__)])
     asyncio.run(_list_inventory())
 
@@ -93,5 +97,5 @@ def main() -> None:
 if __name__ == "__main__":
     try:
         main()
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         print(f"SESSION-DIAG: {type(exc).__name__}: {exc}")
