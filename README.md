@@ -196,3 +196,5 @@ Agent Router is an Agentic AI Foundation project, powered by Envoy. Copyright ©
 [Discord]: https://discord.gg/xuxtPq43gZ
 [Code of conduct]: CODE_OF_CONDUCT.md
 [Cloud Native LLM Gateway]: https://docs.google.com/document/d/1FQN_hGhTNeoTgV5Jj16ialzaSiAxC0ozxH1D9ngCVew/edit?tab=t.0#heading=h.uuu99yemq4eo
+
+<!-- automated-review smoke marker final -->
